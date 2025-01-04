@@ -33,27 +33,6 @@ export default function MainSection() {
         }
     }
 
-    // function sortData(key: string, order: string) {
-    //     const sortedData = [...displayTransactions].sort((a, b) => {
-    //         if (key === "date") {
-    //             return order === "asc"
-    //                 ? new Date(a[key]) - new Date(b[key])
-    //                 : new Date(b[key]) - new Date(a[key]);
-    //         } else if (key === "amount") {
-    //             return order === "asc" ? a[key] - b[key] : b[key] - a[key];
-    //         }
-    //         return 0;
-    //     });
-
-    //     console.log(sortedData);
-    //     setDisplayTransactions(sortedData);
-    // }
-
-    // function filterData(type: string) {
-    //     const filteredData = userTransactions?.filter((item) => item.transactionType === type);
-    //     setDisplayTransactions(filteredData);
-    // }
-
     const applyFilterAndSort = (type: string | null, key: string | null, order: string | null) => {
         const filteredData = type ? userTransactions?.filter((item) => item.transactionType === type) : displayTransactions;
 
