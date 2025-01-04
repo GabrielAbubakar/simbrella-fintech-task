@@ -9,10 +9,8 @@ export default function MainSection() {
     const [userInfo, setUserInfo] = useState<IUserInfo>()
     const [userLoans, setUserLoans] = useState<ILoanInfo[]>()
     const [userTransactions, setUserTransactions] = useState<ITransactionInfo[]>()
-    const [copyTransactions, setCopyTransactions] = useState<ITransactionInfo[]>()
+    const [displayTransactions, setDisplayTransactions] = useState<ITransactionInfo[]>()
     const [isLoading, setIsLoading] = useState(false)
-    const [sortFeatures, setSortFeatures] = useState<string>()
-    const [filterFeatures, setFilterFeatures] = useState<string>()
 
     async function getDetails() {
         try {
@@ -27,7 +25,7 @@ export default function MainSection() {
             setUserInfo(userRes.data)
             setUserLoans(loansRes.data)
             setUserTransactions(transactionRes.data)
-            setCopyTransactions(transactionRes.data)
+            setDisplayTransactions(transactionRes.data)
         } catch (error) {
             console.log(error);
         } finally {
@@ -35,33 +33,43 @@ export default function MainSection() {
         }
     }
 
+    // function sortData(key: string, order: string) {
+    //     const sortedData = [...displayTransactions].sort((a, b) => {
+    //         if (key === "date") {
+    //             return order === "asc"
+    //                 ? new Date(a[key]) - new Date(b[key])
+    //                 : new Date(b[key]) - new Date(a[key]);
+    //         } else if (key === "amount") {
+    //             return order === "asc" ? a[key] - b[key] : b[key] - a[key];
+    //         }
+    //         return 0;
+    //     });
 
+    //     console.log(sortedData);
+    //     setDisplayTransactions(sortedData);
+    // }
 
-    useEffect(() => {
-        function tableFeatures() {
-            // Execute Sort Conditions
-            if (sortFeatures == 'amount-ascending') {
-                setUserTransactions(copyTransactions?.sort((a, b) => a.amount - b.amount))
-            } else if (sortFeatures == 'amount-descending') {
-                setUserTransactions(copyTransactions?.sort((a, b) => b.amount - a.amount))
-            } else if (sortFeatures == 'date-ascending') {
-                setUserTransactions(copyTransactions?.sort((a, b) => new Date(a.amount) - new Date(b.amount)))
-            } else if (sortFeatures == 'date-descending') {
-                setUserTransactions(copyTransactions?.sort((a, b) => new Date(b.amount) - new Date(a.amount)))
+    // function filterData(type: string) {
+    //     const filteredData = userTransactions?.filter((item) => item.transactionType === type);
+    //     setDisplayTransactions(filteredData);
+    // }
+
+    const applyFilterAndSort = (type: string | null, key: string | null, order: string | null) => {
+        const filteredData = type ? userTransactions?.filter((item) => item.transactionType === type) : displayTransactions;
+
+        const sortedData = [...filteredData].sort((a, b) => {
+            if (key === "date") {
+                return order === "asc"
+                    ? new Date(a[key]) - new Date(b[key])
+                    : new Date(b[key]) - new Date(a[key]);
+            } else if (key === "amount") {
+                return order === "asc" ? a[key] - b[key] : b[key] - a[key];
             }
+            return 0;
+        });
+        setDisplayTransactions(sortedData);
+    };
 
-
-            if (filterFeatures == 'filter-credit') {
-                setUserTransactions(copyTransactions?.filter((item) => item.transactionType == 'credit'))
-            } else if (filterFeatures == 'filter-debit') {
-                setUserTransactions(copyTransactions?.filter((item) => item.transactionType == 'debit'))
-            } else (
-                setUserTransactions(copyTransactions)
-            )
-        }
-
-        tableFeatures()
-    }, [sortFeatures, filterFeatures, copyTransactions])
 
     useEffect(() => {
         getDetails()
@@ -163,7 +171,7 @@ export default function MainSection() {
                         </thead>
                         <tbody>
                             {
-                                userTransactions?.map(item => (
+                                displayTransactions?.map(item => (
                                     <tr key={item.id}>
                                         <td className="px-3 py-1">
                                             {item.id}
@@ -191,12 +199,17 @@ export default function MainSection() {
                                 name="sort-feature"
                                 id="sort-feature"
                                 defaultValue='none-selected'
-                                onChange={(e) => setSortFeatures(e.target.value)}>
-                                <option value="none-selected" disabled>--none selected</option>
-                                <option value="amount-ascending">Sort by Amount - Ascending</option>
-                                <option value="amount-descending">Sort by Amount - Descending</option>
-                                <option value="date-ascending">Sort by Date - Ascending</option>
-                                <option value="date-descending">Sort by Date - Descending</option>
+                                className="outline-none"
+                                onChange={(e) => {
+                                    applyFilterAndSort(null, e.target.value.split('-')[0], e.target.value.split('-')[1])
+                                    // console.log(e.target.value.split('-')[0], e.target.value.split('-')[1])
+                                }}
+                            >
+                                {/* <option value="none-selected" disabled>--none selected</option> */}
+                                <option value="amount-asc" >Sort by Amount - Ascending</option>
+                                <option value="amount-desc" >Sort by Amount - Descending</option>
+                                <option value="date-asc" >Sort by Date - Ascending</option>
+                                <option value="date-desc" >Sort by Date - Descending</option>
                             </select>
                         </div>
 
@@ -206,12 +219,15 @@ export default function MainSection() {
                                 name="filter-feature"
                                 id="filter-feature"
                                 defaultValue='none-selected'
-                                onChange={(e) => setFilterFeatures(e.target.value)}>
-                                <option value="none-selected" disabled>--none selected</option>
-                                <option value="filter-credit">Filter by Type - Credit</option>
-                                <option value="filter-debit">Filter by Type - Debit</option>
-                                <option value="none">none</option>
+                                className="outline-none"
+                                onChange={(e) => applyFilterAndSort(e.target.value, null, null)}>
+                                {/* <option value="none-selected" disabled>--none selected</option> */}
+                                <option value="credit">Filter by Type - Credit</option>
+                                <option value="debit">Filter by Type - Debit</option>
                             </select>
+                            <button
+                                className="block mt-4 bg-gray-600 text-white px-4 py-2"
+                                onClick={() => setDisplayTransactions(userTransactions)}>Clear Filters</button>
                         </div>
                     </div>
                 </div>
