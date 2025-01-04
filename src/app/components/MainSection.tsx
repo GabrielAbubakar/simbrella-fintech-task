@@ -37,52 +37,64 @@ export default function MainSection() {
     }, [])
 
     return (
-        <div className="bg-red-300 p-10 flex-1">
+        <div className="bg-slate-200 p-10 flex-1">
             <h1 className="font-bold text-4xl mb-10">
-                Welcome, Gabriel
+                Welcome, {userInfo?.name.split(' ')[0]}
             </h1>
 
             {/* Quick Info Section */}
-            <div className="flex justify-between gap-10 mb-10">
-                <div className="bg-green-300 p-5 w-full">
-                    <H2 text="User Info" />
-
-                    <p>User Id: </p>
-                    <p>Full Name: {userInfo && userInfo.name}</p>
-                    <p>Account Balance: N{userInfo && userInfo.accountBalance}</p>
-                </div>
-                <div className="bg-green-300 p-5 w-full">
+            <div className="flex justify-between gap-5 mb-10">
+                <div className="p-5 w-full bg-white">
                     <H2 text="Recent Transactions" />
 
                     <ul>
-                        <li>Transaction 1</li>
-                        <li>Transaction 2</li>
-                        <li>Transaction 3</li>
+                        {
+                            userTransactions?.slice().sort((a, b) => new Date(b.date) - new Date(a.date))
+                                .slice(0, 2).map((item: ITransactionInfo) => (
+                                    <li key={item.id}>
+                                        {item.transactionType.toUpperCase()} - {item.amount}
+                                    </li>
+                                ))
+                        }
                     </ul>
+                </div>
+
+                <div className="p-5 w-full bg-white">
+                    <H2 text="User Info" />
+
+                    <p>User ID: {userInfo?.id}</p>
+                    <p>Full Name: {userInfo?.name}</p>
+                    <p>Account Balance: <span className="font-bold text-3xl text-[#274867]">N{userInfo?.accountBalance.toLocaleString()}</span></p>
                 </div>
             </div>
 
             {/* Loan/Transaction Section */}
-            <div className="flex justify-between gap-10">
-                <div className="bg-green-300 p-5 w-full">
+            <div className="flex justify-between gap-5">
+                <div className=" p-5 w-full bg-white">
                     <H2 text="Loan Management" />
                     <div className="mb-7">
                         <H3 text="Active Loan" />
-                        <p>Amount: N</p>
-                        <p>Lender: </p>
-                        <p>Due Date</p>
+                        <p>Amount: N{userInfo?.activeLoan.amount.toLocaleString()}</p>
+                        <p>Lender: {userInfo?.activeLoan.lenderId}</p>
+                        <p>Due Date: {userInfo?.activeLoan.dueDate}</p>
                     </div>
 
                     <div className="mb-7">
                         <H3 text="Loan History" />
                         <ul>
-                            <li>Loan 1</li>
-                            <li>Loan 2</li>
-                            <li>Loan 3</li>
+                            {userLoans?.map((item) => (
+                                <li key={item.id}
+                                    className="bg-slate-200 mb-6 p-2"
+                                >
+                                    <p>Amount: {item.amount}</p>
+                                    <p>LenderID: {item.lender_id}</p>
+                                    <p>Date: {new Date(item.date).toLocaleDateString()}</p>
+                                </li>
+                            ))}
                         </ul>
                     </div>
 
-                    <div className="mb-7">
+                    <div className="mb-7 bg-slate-50 px-5 py-3">
                         <H3 text="Request New Loan" />
                         <form action="">
                             <div className="mb-4">
@@ -106,8 +118,39 @@ export default function MainSection() {
                         </form>
                     </div>
                 </div>
-                <div className="bg-green-300 p-5 w-full">
+                <div className="p-10 w-full bg-white">
                     <H2 text="Transaction History" />
+
+                    <table className="table-fixed text-center w-full mt-5">
+                        <thead>
+                            <tr className="bg-[#eee] ">
+                                <th className="px-3 py-1">ID</th>
+                                <th className="px-3 py-1">Transaction Type</th>
+                                <th className="px-3 py-1">Amount</th>
+                                <th className="px-3 py-1">Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {
+                                userTransactions?.map(item => (
+                                    <tr key={item.id}>
+                                        <td className="px-3 py-1">
+                                            {item.id}
+                                        </td>
+                                        <td className={`px-3 py-1 font-bold ${item.transactionType == 'credit' ? 'text-green-400' : 'text-red-400'}`}>
+                                            {item.transactionType}
+                                        </td>
+                                        <td className="px-3 py-1">
+                                            {item.amount.toLocaleString()}
+                                        </td>
+                                        <td className="px-3 py-1">
+                                            {new Date(item.date).toLocaleDateString()}
+                                        </td>
+                                    </tr>
+                                ))
+                            }
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

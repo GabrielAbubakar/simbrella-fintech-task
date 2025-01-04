@@ -1,8 +1,3 @@
-
-
-
-
-
 function H2({ text }: { text: string }) {
     return (
         <h2 className="font-bold text-xl mb-2">
@@ -19,8 +14,17 @@ function H3({ text }: { text: string }) {
     )
 }
 
+function SideBarLink({ text }: { text: string }) {
+    return (
+        <li className="mb-8 cursor-pointer">
+            {text}
+        </li>
+    )
+}
+
 
 export {
     H2,
-    H3
+    H3,
+    SideBarLink
 }
