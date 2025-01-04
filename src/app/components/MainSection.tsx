@@ -134,17 +134,17 @@ export default function MainSection() {
                                 <form action="">
                                     <div className="mb-4">
                                         <label htmlFor="amount">Amount: </label>
-                                        <input type="number" name="amount" id="amount" />
+                                        <input required type="number" name="amount" id="amount" />
                                     </div>
 
                                     <div className="mb-4">
                                         <label htmlFor="due-date">Due Date: </label>
-                                        <input type="date" name="due-date" id="due-date" />
+                                        <input required type="date" name="due-date" id="due-date" />
                                     </div>
 
                                     <div className="mb-4">
                                         <label htmlFor="purpose">Purpose: </label>
-                                        <input type="text" name="purpose" id="purpose" />
+                                        <input required type="text" name="purpose" id="purpose" />
                                     </div>
 
                                     <button className="bg-blue-500 px-4 py-1 text-white hover:-translate-y-1 transition-all">
@@ -153,7 +153,7 @@ export default function MainSection() {
                                 </form>
                             </div>
                         </div>
-                        <div className="p-10 w-full bg-white">
+                        <div className="p-10 px-5 lg:p-10 w-full bg-white">
                             <H2 text="Transaction History" />
 
                             <table className="table-auto text-center w-full mt-5">
