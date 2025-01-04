@@ -36,7 +36,7 @@ export default function MainSection() {
     const applyFilterAndSort = (type: string | null, key: string | null, order: string | null) => {
         const filteredData = type ? userTransactions?.filter((item) => item.transactionType === type) : displayTransactions;
 
-        const sortedData = [...filteredData].sort((a, b) => {
+        const sortedData = [...(filteredData || [])].sort((a, b) => {
             if (key === "date") {
                 return order === "asc"
                     ? new Date(a[key]).getTime() - new Date(b[key]).getTime()
