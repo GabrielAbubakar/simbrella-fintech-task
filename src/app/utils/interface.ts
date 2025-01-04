@@ -26,3 +26,9 @@ export interface ITransactionInfo {
     amount: number,
     date: string,
 }
+
+export interface ITableFeatures {
+    sortFeature: string,
+    filterFeature: string,
+    arr: ITransactionInfo[]
+}

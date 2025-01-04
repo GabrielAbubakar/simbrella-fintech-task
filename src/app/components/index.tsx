@@ -16,7 +16,7 @@ function H3({ text }: { text: string }) {
 
 function SideBarLink({ text }: { text: string }) {
     return (
-        <li className="mb-8 cursor-pointer">
+        <li className="cursor-pointer hover:bg-[#597e9f] py-4 transition-all">
             {text}
         </li>
     )

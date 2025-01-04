@@ -9,7 +9,10 @@ export default function MainSection() {
     const [userInfo, setUserInfo] = useState<IUserInfo>()
     const [userLoans, setUserLoans] = useState<ILoanInfo[]>()
     const [userTransactions, setUserTransactions] = useState<ITransactionInfo[]>()
+    const [copyTransactions, setCopyTransactions] = useState<ITransactionInfo[]>()
     const [isLoading, setIsLoading] = useState(false)
+    const [sortFeatures, setSortFeatures] = useState<string>()
+    const [filterFeatures, setFilterFeatures] = useState<string>()
 
     async function getDetails() {
         try {
@@ -24,13 +27,41 @@ export default function MainSection() {
             setUserInfo(userRes.data)
             setUserLoans(loansRes.data)
             setUserTransactions(transactionRes.data)
-
+            setCopyTransactions(transactionRes.data)
         } catch (error) {
             console.log(error);
         } finally {
             setIsLoading(false)
         }
     }
+
+
+
+    useEffect(() => {
+        function tableFeatures() {
+            // Execute Sort Conditions
+            if (sortFeatures == 'amount-ascending') {
+                setUserTransactions(copyTransactions?.sort((a, b) => a.amount - b.amount))
+            } else if (sortFeatures == 'amount-descending') {
+                setUserTransactions(copyTransactions?.sort((a, b) => b.amount - a.amount))
+            } else if (sortFeatures == 'date-ascending') {
+                setUserTransactions(copyTransactions?.sort((a, b) => new Date(a.amount) - new Date(b.amount)))
+            } else if (sortFeatures == 'date-descending') {
+                setUserTransactions(copyTransactions?.sort((a, b) => new Date(b.amount) - new Date(a.amount)))
+            }
+
+
+            if (filterFeatures == 'filter-credit') {
+                setUserTransactions(copyTransactions?.filter((item) => item.transactionType == 'credit'))
+            } else if (filterFeatures == 'filter-debit') {
+                setUserTransactions(copyTransactions?.filter((item) => item.transactionType == 'debit'))
+            } else (
+                setUserTransactions(copyTransactions)
+            )
+        }
+
+        tableFeatures()
+    }, [sortFeatures, filterFeatures, copyTransactions])
 
     useEffect(() => {
         getDetails()
@@ -51,7 +82,7 @@ export default function MainSection() {
                         {
                             userTransactions?.slice().sort((a, b) => new Date(b.date) - new Date(a.date))
                                 .slice(0, 2).map((item: ITransactionInfo) => (
-                                    <li key={item.id}>
+                                    <li className="list-disc" key={item.id}>
                                         {item.transactionType.toUpperCase()} - {item.amount}
                                     </li>
                                 ))
@@ -74,8 +105,8 @@ export default function MainSection() {
                     <H2 text="Loan Management" />
                     <div className="mb-7">
                         <H3 text="Active Loan" />
-                        <p>Amount: N{userInfo?.activeLoan.amount.toLocaleString()}</p>
-                        <p>Lender: {userInfo?.activeLoan.lenderId}</p>
+                        <p>Amount: <span className="font-bold text-xl text-[#274867]">N{userInfo?.activeLoan.amount.toLocaleString()}</span></p>
+                        <p>Lender ID: {userInfo?.activeLoan.lenderId}</p>
                         <p>Due Date: {userInfo?.activeLoan.dueDate}</p>
                     </div>
 
@@ -86,15 +117,15 @@ export default function MainSection() {
                                 <li key={item.id}
                                     className="bg-slate-200 mb-6 p-2"
                                 >
-                                    <p>Amount: {item.amount}</p>
-                                    <p>LenderID: {item.lender_id}</p>
+                                    <p>Amount: {item.amount.toLocaleString()}</p>
+                                    <p>Lender ID: {item.lender_id}</p>
                                     <p>Date: {new Date(item.date).toLocaleDateString()}</p>
                                 </li>
                             ))}
                         </ul>
                     </div>
 
-                    <div className="mb-7 bg-slate-50 px-5 py-3">
+                    <div className="mb-7 bg-slate-100 px-5 py-3">
                         <H3 text="Request New Loan" />
                         <form action="">
                             <div className="mb-4">
@@ -112,7 +143,7 @@ export default function MainSection() {
                                 <input type="text" name="purpose" id="purpose" />
                             </div>
 
-                            <button className="bg-blue-500 px-4 py-1 text-white">
+                            <button className="bg-blue-500 px-4 py-1 text-white hover:-translate-y-1 transition-all">
                                 Request Loan
                             </button>
                         </form>
@@ -121,7 +152,7 @@ export default function MainSection() {
                 <div className="p-10 w-full bg-white">
                     <H2 text="Transaction History" />
 
-                    <table className="table-fixed text-center w-full mt-5">
+                    <table className="table-auto text-center w-full mt-5">
                         <thead>
                             <tr className="bg-[#eee] ">
                                 <th className="px-3 py-1">ID</th>
@@ -151,6 +182,38 @@ export default function MainSection() {
                             }
                         </tbody>
                     </table>
+
+                    <div className="mt-5 bg-slate-200 inline-block p-4">
+                        <p className="font-bold mb-4">Table Options</p>
+                        <div>
+                            <label className="font-bold" htmlFor="sort-feature">Sort:</label>
+                            <select
+                                name="sort-feature"
+                                id="sort-feature"
+                                defaultValue='none-selected'
+                                onChange={(e) => setSortFeatures(e.target.value)}>
+                                <option value="none-selected" disabled>--none selected</option>
+                                <option value="amount-ascending">Sort by Amount - Ascending</option>
+                                <option value="amount-descending">Sort by Amount - Descending</option>
+                                <option value="date-ascending">Sort by Date - Ascending</option>
+                                <option value="date-descending">Sort by Date - Descending</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label className="font-bold" htmlFor="filter-feature">Filter:</label>
+                            <select
+                                name="filter-feature"
+                                id="filter-feature"
+                                defaultValue='none-selected'
+                                onChange={(e) => setFilterFeatures(e.target.value)}>
+                                <option value="none-selected" disabled>--none selected</option>
+                                <option value="filter-credit">Filter by Type - Credit</option>
+                                <option value="filter-debit">Filter by Type - Debit</option>
+                                <option value="none">none</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
