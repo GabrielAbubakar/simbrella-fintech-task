@@ -1,12 +1,13 @@
 
 
 export async function GET() {
-    const currentDate = new Date(); // Get the current date
+    // Generate future date
+    const currentDate = new Date();
     currentDate.setDate(currentDate.getDate() + 3);
 
     const user = {
         id: 1,
-        name: 'Gabriel Abubakar',
+        name: 'Joe Pesci',
         accountBalance: 200000,
         activeLoan: {
             id: 100,
