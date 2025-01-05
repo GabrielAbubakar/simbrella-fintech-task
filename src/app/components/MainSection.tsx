@@ -55,7 +55,7 @@ export default function MainSection() {
     }, [])
 
     return (
-        <div className="bg-slate-200 p-10 flex-1 max-w-full">
+        <div className="bg-slate-200 p-5 lg:p-10 flex-1 max-w-full">
             <h1 className="font-bold text-4xl mb-10">
                 Welcome, {!isLoading ? userInfo?.name.split(' ')[0] : <span className="h-7 inline-block bg-gray-300 w-52 animate-pulse"></span>}
             </h1>
