@@ -55,7 +55,7 @@ export default function MainSection() {
     }, [])
 
     return (
-        <div className="bg-slate-200 p-10 flex-1">
+        <div className="bg-slate-200 p-10 flex-1 max-w-full">
             <h1 className="font-bold text-4xl mb-10">
                 Welcome, {!isLoading ? userInfo?.name.split(' ')[0] : <span className="h-7 inline-block bg-gray-300 w-52 animate-pulse"></span>}
             </h1>
@@ -65,7 +65,7 @@ export default function MainSection() {
             {/* Quick Info Section */}
             {
                 !isLoading ? (
-                    <div className="flex  justify-between gap-5 mb-10">
+                    <div className="flex flex-col lg:flex-row justify-between gap-5 mb-10">
                         <div className="p-5 w-full bg-white">
                             <H2 text="Recent Transactions" />
 
@@ -90,7 +90,7 @@ export default function MainSection() {
                         </div>
                     </div>
                 ) : (
-                    <div className="flex justify-between gap-5 mb-10">
+                    <div className="flex flex-col lg:flex-row justify-between gap-5 mb-10 max-w-full">
                         <div className="h-36 w-full bg-gray-300 animate-pulse">
 
                         </div>

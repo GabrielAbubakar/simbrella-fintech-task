@@ -10,6 +10,7 @@ export default function Sidebar() {
                 <SideBarLink text="📬 Messages" />
                 <SideBarLink text="🏦 Loans" />
                 <SideBarLink text="💱 Transactions" />
+                <SideBarLink text="👤 Profile" />
             </ul>
         </div>
     )
