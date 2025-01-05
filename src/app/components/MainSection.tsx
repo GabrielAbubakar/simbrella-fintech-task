@@ -153,10 +153,10 @@ export default function MainSection() {
                                 </form>
                             </div>
                         </div>
-                        <div className="p-10 px-5 lg:p-10 w-full bg-white">
+                        <div className="p-10 px-5 lg:p-10 w-full bg-white overflow-scroll">
                             <H2 text="Transaction History" />
 
-                            <table className="table-auto text-center w-full mt-5">
+                            <table className="table-auto text-center max-w-full mt-5">
                                 <thead>
                                     <tr className="bg-[#eee] ">
                                         <th className="px-3 py-1">ID</th>
