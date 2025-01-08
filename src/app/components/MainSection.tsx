@@ -37,6 +37,7 @@ export default function MainSection() {
         const filteredData = type ? userTransactions?.filter((item) => item.transactionType === type) : displayTransactions;
 
         const sortedData = [...(filteredData || [])].sort((a, b) => {
+            // sorting function
             if (key === "date") {
                 return order === "asc"
                     ? new Date(a[key]).getTime() - new Date(b[key]).getTime()
@@ -129,7 +130,8 @@ export default function MainSection() {
                                 </ul>
                             </div>
 
-                            <div className="mb-7 bg-slate-100 px-5 py-3">
+                            <div className="mb-7 bg-slate-100 px-5 py-10">
+                                {/* Request Loan Form */}
                                 <H3 text="Request New Loan" />
                                 <form action="">
                                     <div className="mb-4">
@@ -147,7 +149,7 @@ export default function MainSection() {
                                         <input required type="text" name="purpose" id="purpose" />
                                     </div>
 
-                                    <button className="bg-blue-500 px-4 py-1 text-white hover:-translate-y-1 transition-all">
+                                    <button className="bg-blue-500 px-4 py-1 text-white hover:-translate-y-1 transition-all active:translate-y-1">
                                         Request Loan
                                     </button>
                                 </form>
@@ -190,42 +192,48 @@ export default function MainSection() {
                             {/* Table Options */}
                             <div className="mt-5 bg-slate-200 inline-block p-4">
                                 <p className="font-bold mb-4">Table Options</p>
-                                <div>
-                                    <label className="font-bold" htmlFor="sort-feature">Sort: </label>
-                                    <select
-                                        name="sort-feature"
-                                        id="sort-feature"
-                                        defaultValue='none-selected'
-                                        className="outline-none"
-                                        onChange={(e) => {
-                                            applyFilterAndSort(null, e.target.value.split('-')[0], e.target.value.split('-')[1])
-                                            // console.log(e.target.value.split('-')[0], e.target.value.split('-')[1])
-                                        }}
-                                    >
-                                        {/* <option value="none-selected" disabled>--none selected</option> */}
-                                        <option value="amount-asc" >Sort by Amount - Ascending</option>
-                                        <option value="amount-desc" >Sort by Amount - Descending</option>
-                                        <option value="date-asc" >Sort by Date - Ascending</option>
-                                        <option value="date-desc" >Sort by Date - Descending</option>
-                                    </select>
-                                </div>
 
-                                <div>
-                                    <label className="font-bold" htmlFor="filter-feature">Filter: </label>
-                                    <select
-                                        name="filter-feature"
-                                        id="filter-feature"
-                                        defaultValue='none-selected'
-                                        className="outline-none"
-                                        onChange={(e) => applyFilterAndSort(e.target.value, null, null)}>
-                                        {/* <option value="none-selected" disabled>--none selected</option> */}
-                                        <option value="credit">Filter by Type - Credit</option>
-                                        <option value="debit">Filter by Type - Debit</option>
-                                    </select>
-                                    <button
-                                        className="block mt-4 bg-gray-600 text-white px-4 py-2"
-                                        onClick={() => setDisplayTransactions(userTransactions)}>Clear Filters</button>
-                                </div>
+                                <form
+                                    onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
+                                        e.preventDefault()
+                                        const form = e.target as HTMLFormElement
+                                        form.reset()
+                                    }}
+                                    id="form">
+                                    <div>
+                                        <label className="font-bold" htmlFor="sort-feature">Sort: </label>
+                                        <select
+                                            name="sort-feature"
+                                            id="sort-feature"
+                                            defaultValue='none-selected'
+                                            className="outline-none"
+                                            onChange={(e) => applyFilterAndSort(null, e.target.value.split('-')[0], e.target.value.split('-')[1])}
+                                        >
+                                            <option value="none-selected" disabled>--none selected</option>
+                                            <option value="amount-asc" >Sort by Amount - Ascending</option>
+                                            <option value="amount-desc" >Sort by Amount - Descending</option>
+                                            <option value="date-asc" >Sort by Date - Ascending</option>
+                                            <option value="date-desc" >Sort by Date - Descending</option>
+                                        </select>
+                                    </div>
+
+                                    <div>
+                                        <label className="font-bold" htmlFor="filter-feature">Filter: </label>
+                                        <select
+                                            name="filter-feature"
+                                            id="filter-feature"
+                                            defaultValue='none-selected'
+                                            className="outline-none"
+                                            onChange={(e) => applyFilterAndSort(e.target.value, null, null)}>
+                                            <option value="none-selected" disabled>--none selected</option>
+                                            <option value="credit">Filter by Type - Credit</option>
+                                            <option value="debit">Filter by Type - Debit</option>
+                                        </select>
+                                        <button
+                                            className="block mt-4 bg-gray-600 text-white px-4 py-2 hover:-translate-y-1 active:translate-y-1 transition-all"
+                                            onClick={() => setDisplayTransactions(userTransactions)}>Clear Filters</button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -240,6 +248,6 @@ export default function MainSection() {
                     </div>
                 )
             }
-        </div>
+        </div >
     )
 }
