@@ -14,9 +14,9 @@ function H3({ text }: { text: string }) {
     )
 }
 
-function SideBarLink({ text }: { text: string }) {
+function SideBarLink({ text, closeNav }: { text: string, closeNav?: () => void }) {
     return (
-        <li data-testid="sidebar-link" className="cursor-pointer hover:bg-[#597e9f] py-4 transition-all">
+        <li onClick={closeNav} data-testid="sidebar-link" className="cursor-pointer hover:bg-[#597e9f] py-4 transition-all">
             {text}
         </li>
     )

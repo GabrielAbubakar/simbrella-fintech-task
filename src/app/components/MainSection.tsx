@@ -70,7 +70,7 @@ export default function MainSection() {
                         <div className="p-5 w-full bg-white">
                             <H2 text="Recent Transactions" />
 
-                            <ul>
+                            <ul className="list-none pl-4">
                                 {
                                     userTransactions?.slice().sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
                                         .slice(0, 2).map((item: ITransactionInfo) => (
@@ -130,23 +130,23 @@ export default function MainSection() {
                                 </ul>
                             </div>
 
-                            <div className="mb-7 bg-slate-100 px-5 py-10">
+                            <div className="mb-7 bg-slate-100 px-5 pt-7 py-10">
                                 {/* Request Loan Form */}
                                 <H3 text="Request New Loan" />
-                                <form action="">
+                                <form className="mt-5" action="">
                                     <div className="mb-4">
                                         <label htmlFor="amount">Amount: </label>
-                                        <input required type="number" name="amount" id="amount" />
+                                        <input className="p-2 w-[250px]" required type="number" name="amount" id="amount" />
                                     </div>
 
                                     <div className="mb-4">
                                         <label htmlFor="due-date">Due Date: </label>
-                                        <input required type="date" name="due-date" id="due-date" />
+                                        <input className="p-2 w-[250px]" required type="date" name="due-date" id="due-date" />
                                     </div>
 
                                     <div className="mb-4">
                                         <label htmlFor="purpose">Purpose: </label>
-                                        <input required type="text" name="purpose" id="purpose" />
+                                        <input className="p-2 w-[250px]" required type="text" name="purpose" id="purpose" />
                                     </div>
 
                                     <button className="bg-blue-500 px-4 py-1 text-white hover:-translate-y-1 transition-all active:translate-y-1">
@@ -155,10 +155,12 @@ export default function MainSection() {
                                 </form>
                             </div>
                         </div>
-                        <div className="p-10 px-5 lg:p-10 w-full bg-white overflow-scroll">
+
+                        {/* Transaction History */}
+                        <div className="p-10 px-5 lg:p-10 w-full self-start bg-white overflow-scroll">
                             <H2 text="Transaction History" />
 
-                            <table className="table-auto text-center max-w-full mt-5">
+                            <table className="table-auto text-left max-w-full mt-5">
                                 <thead>
                                     <tr className="bg-[#eee] ">
                                         <th className="px-3 py-1">ID</th>
@@ -190,7 +192,7 @@ export default function MainSection() {
                             </table>
 
                             {/* Table Options */}
-                            <div className="mt-5 bg-slate-200 inline-block p-4">
+                            <div className="mt-5 bg-slate-200 inline-block p-4 w-full">
                                 <p className="font-bold mb-4">Table Options</p>
 
                                 <form
@@ -200,13 +202,13 @@ export default function MainSection() {
                                         form.reset()
                                     }}
                                     id="form">
-                                    <div>
+                                    <div className="mb-3">
                                         <label className="font-bold" htmlFor="sort-feature">Sort: </label>
                                         <select
                                             name="sort-feature"
                                             id="sort-feature"
                                             defaultValue='none-selected'
-                                            className="outline-none"
+                                            className="outline-none p-2 w-[250px]"
                                             onChange={(e) => applyFilterAndSort(null, e.target.value.split('-')[0], e.target.value.split('-')[1])}
                                         >
                                             <option value="none-selected" disabled>--none selected</option>
@@ -223,7 +225,7 @@ export default function MainSection() {
                                             name="filter-feature"
                                             id="filter-feature"
                                             defaultValue='none-selected'
-                                            className="outline-none"
+                                            className="outline-none p-2 w-[250px]"
                                             onChange={(e) => applyFilterAndSort(e.target.value, null, null)}>
                                             <option value="none-selected" disabled>--none selected</option>
                                             <option value="credit">Filter by Type - Credit</option>
@@ -239,7 +241,7 @@ export default function MainSection() {
                     </div>
                 ) : (
                     <div className="flex justify-between gap-5 mb-10">
-                        <div className="h-72 w-full bg-gray-300 animate-pulse">
+                        <div className="h-[4rem] w-full bg-gray-300 animate-pulse">
 
                         </div>
                         <div className="h-72 w-full bg-gray-300 animate-pulse">
