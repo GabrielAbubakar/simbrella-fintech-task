@@ -241,10 +241,10 @@ export default function MainSection() {
                     </div>
                 ) : (
                     <div className="flex justify-between gap-5 mb-10">
-                        <div className="h-[4rem] w-full bg-gray-300 animate-pulse">
+                        <div className="h-[40rem] w-full bg-gray-300 animate-pulse">
 
                         </div>
-                        <div className="h-72 w-full bg-gray-300 animate-pulse">
+                        <div className="h-80 w-full bg-gray-300 animate-pulse">
 
                         </div>
                     </div>
